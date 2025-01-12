@@ -23,7 +23,7 @@
 
 #define VERSION_STRING          "TWIBOOT v3.2"
 #define EEPROM_SUPPORT          1
-#define LED_SUPPORT             1
+#define LED_SUPPORT             0
 
 #ifndef USE_CLOCKSTRETCH
 #define USE_CLOCKSTRETCH        0
@@ -34,7 +34,7 @@
 #endif
 
 #ifndef TWI_ADDRESS
-#define TWI_ADDRESS             0x29
+#error "TWI_ADDRESS must be provided"
 #endif
 
 #define F_CPU                   8000000ULL
@@ -46,12 +46,12 @@
 #define TIMER_MSEC2IRQCNT(x)    (x / TIMER_IRQFREQ_MS)
 
 #if (LED_SUPPORT)
-#define LED_INIT()              DDRB = ((1<<PORTB4) | (1<<PORTB5))
-#define LED_RT_ON()             PORTB |= (1<<PORTB4)
-#define LED_RT_OFF()            PORTB &= ~(1<<PORTB4)
-#define LED_GN_ON()             PORTB |= (1<<PORTB5)
-#define LED_GN_OFF()            PORTB &= ~(1<<PORTB5)
-#define LED_GN_TOGGLE()         PORTB ^= (1<<PORTB5)
+#define LED_INIT()              DDRB = ((1<<PB1) | (1<<PB2))
+#define LED_RT_ON()             PORTB |= (1<<PB1)
+#define LED_RT_OFF()            PORTB &= ~(1<<PB1)
+#define LED_GN_ON()             PORTB |= (1<<PB2)
+#define LED_GN_OFF()            PORTB &= ~(1<<PB2)
+#define LED_GN_TOGGLE()         PORTB ^= (1<<PB2)
 #define LED_OFF()               PORTB = 0x00
 #else
 #define LED_INIT()
@@ -64,12 +64,12 @@
 #endif /* LED_SUPPORT */
 
 #if !defined(TWCR) && defined(USICR)
-#define USI_PIN_INIT()          { PORTB |= ((1<<PORTB0) | (1<<PORTB2)); \
-                                  DDRB |= (1<<PORTB2); \
+#define USI_PIN_INIT()          { PORTA |= ((1<<PORTA6) | (1<<PORTA4)); \
+                                  DDRA |= (1<<PORTA4); \
                                 }
-#define USI_PIN_SDA_INPUT()     DDRB &= ~(1<<PORTB0)
-#define USI_PIN_SDA_OUTPUT()    DDRB |= (1<<PORTB0)
-#define USI_PIN_SCL()           (PINB & (1<<PINB2))
+#define USI_PIN_SDA_INPUT()     DDRA &= ~(1<<PORTA6)
+#define USI_PIN_SDA_OUTPUT()    DDRA |= (1<<PORTA6)
+#define USI_PIN_SCL()           (PINA & (1<<PINA4))
 
 #if (USE_CLOCKSTRETCH == 0)
 #error "USI peripheral requires enabled USE_CLOCKSTRETCH"

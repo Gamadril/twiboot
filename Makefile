@@ -8,67 +8,21 @@ TARGET = twiboot
 SOURCE = $(wildcard *.c)
 
 # select MCU
-MCU = attiny85
+MCU = attiny84
 
-AVRDUDE_PROG := -c avr910 -b 115200 -P /dev/ttyUSB0
-#AVRDUDE_PROG := -c dragon_isp -P usb
+AVRDUDE_PROG := -c usbasp -B 125kHz
 
 # ---------------------------------------------------------------------------
 
-ifeq ($(MCU), atmega8)
-# atmega8:
-# Fuse L: 0x84 (8Mhz internal RC-Osz., 2.7V BOD)
-# Fuse H: 0xda (512 words bootloader)
-AVRDUDE_MCU=m8
-AVRDUDE_FUSES=lfuse:w:0x84:m hfuse:w:0xda:m
-
-BOOTLOADER_START=0x1C00
-endif
-
-ifeq ($(MCU), atmega88)
-# atmega88:
-# Fuse L: 0xc2 (8Mhz internal RC-Osz.)
-# Fuse H: 0xdd (2.7V BOD)
-# Fuse E: 0xfa (512 words bootloader)
-AVRDUDE_MCU=m88
-AVRDUDE_FUSES=lfuse:w:0xc2:m hfuse:w:0xdd:m efuse:w:0xfa:m
-
-BOOTLOADER_START=0x1C00
-endif
-
-ifeq ($(MCU), atmega168)
-# atmega168:
-# Fuse L: 0xc2 (8Mhz internal RC-Osz.)
-# Fuse H: 0xdd (2.7V BOD)
-# Fuse E: 0xfa (512 words bootloader)
-AVRDUDE_MCU=m168 -F
-AVRDUDE_FUSES=lfuse:w:0xc2:m hfuse:w:0xdd:m efuse:w:0xfa:m
-
-BOOTLOADER_START=0x3C00
-endif
-
-ifeq ($(MCU), atmega328p)
-# atmega328p:
-# Fuse L: 0xc2 (8Mhz internal RC-Osz.)
-# Fuse H: 0xdc (512 words bootloader)
-# Fuse E: 0xfd (2.7V BOD)
-AVRDUDE_MCU=m328p -F
-AVRDUDE_FUSES=lfuse:w:0xc2:m hfuse:w:0xdc:m efuse:w:0xfd:m
-
-BOOTLOADER_START=0x7C00
-endif
-
-ifeq ($(MCU), attiny85)
-# attiny85:
+# attiny84:
 # Fuse L: 0xe2 (8Mhz internal RC-Osz.)
 # Fuse H: 0xdd (2.7V BOD)
 # Fuse E: 0xfe (self programming enable)
-AVRDUDE_MCU=t85
+AVRDUDE_MCU=attiny84
 AVRDUDE_FUSES=lfuse:w:0xe2:m hfuse:w:0xdd:m efuse:w:0xfe:m
 
 BOOTLOADER_START=0x1C00
-CFLAGS_TARGET=-DUSE_CLOCKSTRETCH=1 -DVIRTUAL_BOOT_SECTION=1
-endif
+CFLAGS_TARGET=-DUSE_CLOCKSTRETCH=1 -DVIRTUAL_BOOT_SECTION=1 -DTWI_ADDRESS=$(ADDRESS)
 
 # ---------------------------------------------------------------------------
 
