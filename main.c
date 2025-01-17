@@ -786,7 +786,7 @@ void init1(void)
  * automagically called on startup
  */
 #if defined (__AVR_ATmega88__) || defined (__AVR_ATmega168__) || \
-    defined (__AVR_ATmega328P__)
+    defined (__AVR_ATmega328P__) || defined (__AVR_ATtiny84__)
 /* *************************************************************************
  * disable_wdt_timer
  * ************************************************************************* */

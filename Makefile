@@ -15,11 +15,8 @@ AVRDUDE_PROG := -c usbasp -B 125kHz
 # ---------------------------------------------------------------------------
 
 # attiny84:
-# Fuse L: 0xe2 (8Mhz internal RC-Osz.)
-# Fuse H: 0xdd (2.7V BOD)
-# Fuse E: 0xfe (self programming enable)
-AVRDUDE_MCU=attiny84
-AVRDUDE_FUSES=lfuse:w:0xe2:m hfuse:w:0xdd:m efuse:w:0xfe:m
+AVRDUDE_MCU=t84
+AVRDUDE_FUSES=lfuse:w:0xe2:m hfuse:w:0xdf:m efuse:w:0xfe:m
 
 BOOTLOADER_START=0x1C00
 CFLAGS_TARGET=-DUSE_CLOCKSTRETCH=1 -DVIRTUAL_BOOT_SECTION=1 -DTWI_ADDRESS=$(ADDRESS)
