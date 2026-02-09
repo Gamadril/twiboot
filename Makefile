@@ -52,3 +52,9 @@ install: $(TARGET).elf
 
 fuses:
 	avrdude $(AVRDUDE_PROG) -p $(AVRDUDE_MCU) $(patsubst %,-U %, $(AVRDUDE_FUSES))
+.PHONY: all check-address
+all: check-address $(TARGET).elf fuses install clean
+	@echo "Build, fuse programming, flashing, and cleanup completed successfully"
+
+check-address:
+	@if [ -z "$(ADDRESS)" ]; then echo "ERROR: ADDRESS parameter required. Usage: make ADDRESS=0xXX all"; exit 1; fi
